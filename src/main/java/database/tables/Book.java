@@ -3,32 +3,32 @@ package database.tables;
 public class Book {
     private int id_book;
     private String name;
-    private Author author;
     private int pages;
-    private int year;
+    private int price;
     private String language;
+    private int id_author;
 
     public Book(){}
-    public Book(int id_book, String name,Author author,int pages, int year, String language){
+    public Book(int id_book, String name,int id_author,int pages, int price, String language){
         this.id_book=id_book;
-        this.author=author;
+        this.id_author=id_author;
         this.language=language;
         this.name=name;
         this.pages=pages;
-        this.year=year;
+        this.price=price;
     }
 
     public void setId(int id){this.id_book=id;}
     public void setName(String name){this.name=name;}
-    public void setAuthor(Author author){this.author=author;}
+    public void setAuthor(int id_author){this.id_author=id_author;}
     public void setPages(int pages){this.pages=pages;}
-    public void setYear(int year){this.year=year;}
+    public void setPrice(int price){this.price=price;}
     public void setLanguage(String language){this.language=language;}
 
     public int getId(){return this.id_book;}
     public String getName(){return this.name;}
-    public Author getAuthor(){return this.author;}
+    public int getAuthor(){return this.id_author;}
     public int getPages(){return this.pages;}
-    public int getYear(){return this.year;}
+    public int getPrice(){return this.price;}
     public String getLanguage(){return this.language;}
 }
