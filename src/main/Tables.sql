@@ -1,3 +1,9 @@
+CREATE TABLE author
+(
+  id_author NUMBER,
+  name VARCHAR2(255),
+  CONSTRAINT author_pk PRIMARY KEY (id_author)
+);
 CREATE TABLE book
 (
   id_book    NUMBER,
@@ -8,13 +14,7 @@ CREATE TABLE book
   id_author    NUMBER,
   CONSTRAINT book_pk PRIMARY KEY (id_book),
   CONSTRAINT author_fk FOREIGN KEY (id_author) REFERENCES author (id_author)
-)
-CREATE TABLE author
-(
-  id_author NUMBER,
-  name VARCHAR2(255),
-  CONSTRAINT author_pk PRIMARY KEY (id_author)
-)
+);
 
 INSERT INTO author (id_author,name) VALUES (1,'Достоевский Федор Михайлович');
 INSERT INTO author (id_author,name) VALUES (2,'Пушкин Александр Сергеевич');

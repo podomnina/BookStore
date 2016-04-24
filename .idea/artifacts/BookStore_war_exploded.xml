@@ -7,7 +7,7 @@
           <element id="module-output" name="BookStore" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.oracle.jdbc:ojdbc7:12.1.0.2" />
+          <element id="library" level="project" name="Maven: com.oracle:ojdbc7:12.1.0.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">
