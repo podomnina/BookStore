@@ -1,7 +1,7 @@
 CREATE TABLE author
 (
   id_author NUMBER,
-  name VARCHAR2(255),
+  name_author VARCHAR2(255),
   CONSTRAINT author_pk PRIMARY KEY (id_author)
 );
 CREATE TABLE book
@@ -16,12 +16,12 @@ CREATE TABLE book
   CONSTRAINT author_fk FOREIGN KEY (id_author) REFERENCES author (id_author)
 );
 
-INSERT INTO author (id_author,name) VALUES (1,'Достоевский Федор Михайлович');
-INSERT INTO author (id_author,name) VALUES (2,'Пушкин Александр Сергеевич');
-INSERT INTO author (id_author,name) VALUES (3,'Джек Лондон');
-INSERT INTO author (id_author,name) VALUES (4,'Агата Кристи');
-INSERT INTO author (id_author,name) VALUES (5,'Булгаков Михаил Афанасьевич');
+INSERT INTO author (id_author,name_author) VALUES (1,'Р”РѕСЃС‚РѕРµРІСЃРєРёР№ Р¤РµРґРѕСЂ РњРёС…Р°Р№Р»РѕРІРёС‡');
+INSERT INTO author (id_author,name_author) VALUES (2,'РџСѓС€РєРёРЅ РђР»РµРєСЃР°РЅРґСЂ РЎРµСЂРіРµРµРІРёС‡');
+INSERT INTO author (id_author,name_author) VALUES (3,'Р”Р¶РµРє Р›РѕРЅРґРѕРЅ');
+INSERT INTO author (id_author,name_author) VALUES (4,'РђРіР°С‚Р° РљСЂРёСЃС‚Рё');
+INSERT INTO author (id_author,name_author) VALUES (5,'Р‘СѓР»РіР°РєРѕРІ РњРёС…Р°РёР» РђС„Р°РЅР°СЃСЊРµРІРёС‡');
 
-INSERT INTO book (id_book,name,pages,price,language,id_author) VALUES (1,'Преступление и наказание',608,200,'русский',1);
-INSERT INTO book (id_book,name,pages,price,language,id_author) VALUES (2,'Евгений Онегин',352,100,'русский',2);
-INSERT INTO book (id_book,name,pages,price,language,id_author) VALUES (3,'Собачье сердце',640,250,'русский',5);
+INSERT INTO book (id_book,name,pages,price,language,id_author) VALUES (1,'РџСЂРµСЃС‚СѓРїР»РµРЅРёРµ Рё РЅР°РєР°Р·Р°РЅРёРµ',608,200,'СЂСѓСЃСЃРєРёР№',1);
+INSERT INTO book (id_book,name,pages,price,language,id_author) VALUES (2,'Р•РІРіРµРЅРёР№ РћРЅРµРіРёРЅ',352,100,'СЂСѓСЃСЃРєРёР№',2);
+INSERT INTO book (id_book,name,pages,price,language,id_author) VALUES (3,'РЎРѕР±Р°С‡СЊРµ СЃРµСЂРґС†Рµ',640,250,'СЂСѓСЃСЃРєРёР№',5);

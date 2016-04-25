@@ -2,7 +2,7 @@ package database.tables;
 
 public class Author {
     private int id_author;
-    private String name;    //разбивать на ФИО?
+    private String name;    //СЂР°Р·РґРµР»СЏС‚СЊ РЅР° Р¤РРћ?
 
     public Author(){}
     public Author(int id_author,String name){

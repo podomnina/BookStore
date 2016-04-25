@@ -10,7 +10,10 @@ public class main {
         DatabaseHelper db=new DatabaseHelper();
         db.ConnectDatabase();
         db.makeAllRequestAuthor();
+        //db.InsertAuthor(6, "Васильев Борис Львович");
+        //db.InsertBook(4,"А зори здесь тихие",288,137,"русский",6);
         db.makeAllRequestBook();
+        db.makeAllRequestAuthor();
         db.CloseDatabase();
 
     }
