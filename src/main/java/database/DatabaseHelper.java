@@ -10,7 +10,7 @@ public class DatabaseHelper {
     private static ResultSet resultSet = null;
     private static Statement statement = null;
 
-    public void ConnectDatabase() throws SQLException, ClassNotFoundException {
+    public void connectDatabase() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         OracleDataSource ds = new OracleDataSource ( );
         ds.setDriverType("thin");
@@ -23,85 +23,56 @@ public class DatabaseHelper {
         statement = connection.createStatement();
     }
 
-    public void CloseDatabase() throws SQLException {
+    public void closeDatabase() throws SQLException {
         connection.close();
     }
 
-    public void InsertBook(int id,String name,int pages,int price, String language, int id_author) throws SQLException {
-        String sql="insert into book (id_book, name,pages,price,language,id_author) " +
-                "values (" + id + ", '" + name + "', " + pages + ", " + price + ", '" + language + "', " + id_author + ") ";
+    public void insertBook(String name,int pages,int price, String language, int id_author) throws SQLException {
+        String sql="insert into book (id, name,pages,price,language,id_author) " +
+                "values (book_seq.nextval, '" + name + "', " + pages + ", " + price + ", '" + language + "', " + id_author + ") ";
 
         statement.execute(sql);
     }
-    public void InsertAuthor(int id,String name) throws SQLException {
-        String sql="insert into author (id_author, name_author) " +
-                "values (" + id + ", '" + name + "') ";
+    public void insertAuthor(String name) throws SQLException {
+        String sql="insert into author (id, name) " +
+                "values (author_seq.nextval, '" + name + "') ";
         statement.execute(sql);
     }
-    public void DeleteBook() {}
-    public void DeleteAuthor(){}
+    public void deleteBook() {}
+    public void deleteAuthor(){}
     public void UpdateBook(){}
     public void UpdateAuthor(){}
 
-    public void makeAllRequestBook() throws SQLException {
-        String sql="select b.id_book,b.name,b.pages,b.price,b.language,a.name_author from book b, author a where a.id_author=b.id_author";
+    public void getAllBook() throws SQLException {
+        String sql="select b.id,b.name,b.pages,b.price,b.language,a.name as author_name from book b, author a where a.id=b.id_author";
         resultSet=statement.executeQuery(sql);
-        //String str=resultSetToJSON(resultSet);
         System.out.println("Список книг:");
         while(resultSet.next()){
-            int id=resultSet.getInt("id_book");
+            int id=resultSet.getInt("id");
             String name=resultSet.getString("name");
             int pages=resultSet.getInt("pages");
             int price=resultSet.getInt("price");
             String language=resultSet.getString("language");
-            String author=resultSet.getString("name_author");
+            String author=resultSet.getString("author_name");
             System.out.println(id+" "+name+" "+pages+" "+price+" "+language+" "+author);
         }
 
 
 
     }
-    public void makeAllRequestAuthor() throws SQLException {
+    public void getAllAuthor() throws SQLException {
         String sql="select * from author";
         resultSet=statement.executeQuery(sql);
         System.out.println("Список авторов:");
         while(resultSet.next()){
-            int id=resultSet.getInt("id_author");
-            String name=resultSet.getString("name_author");
+            int id=resultSet.getInt("id");
+            String name=resultSet.getString("name");
             System.out.println(id+" "+name);
         }
     }
 
 
 
-    public String resultSetToJSON(ResultSet rs) throws java.sql.SQLException {
-        String response = "{ \"colNames\":[";
-        response = response + '"' + rs.getMetaData().getColumnLabel(1) + '"';
-        for (int i=2; i<=rs.getMetaData().getColumnCount(); i++){
-            response = response + ',' + '"' + rs.getMetaData().getColumnLabel(i) + '"';
-        }
-
-        if (rs.next()) {
-            response += "], \"dataArray\":[";
-
-
-            response += "[" + '"' + rs.getString(1) + '"';
-            for (int i = 2; i <= rs.getMetaData().getColumnCount(); i++) {
-                response += ", " + '"' + rs.getString(i) + '"';
-            }
-            response += "]";
-            while (rs.next()) {
-                response += ",[" + '"' + rs.getString(1) + '"';
-                for (int i = 2; i <= rs.getMetaData().getColumnCount(); i++) {
-                    response += ", " + '"' + rs.getString(i) + '"';
-                }
-                response += "]";
-            }
-        }
-        response += "]}";
-
-        return response;
-    }
 
 
 }
