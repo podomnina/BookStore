@@ -30,21 +30,56 @@ public class DatabaseHelper {
     public void insertBook(String name,int pages,int price, String language, int id_author) throws SQLException {
         String sql="insert into book (id, name,pages,price,language,id_author) " +
                 "values (book_seq.nextval, '" + name + "', " + pages + ", " + price + ", '" + language + "', " + id_author + ") ";
-
         statement.execute(sql);
     }
+
     public void insertAuthor(String name) throws SQLException {
         String sql="insert into author (id, name) " +
                 "values (author_seq.nextval, '" + name + "') ";
         statement.execute(sql);
     }
-    public void deleteBook() {}
-    public void deleteAuthor(){}
-    public void UpdateBook(){}
-    public void UpdateAuthor(){}
+
+    public void deleteBook(int id) throws SQLException {
+        String sql="delete from book where id="+id;
+        statement.execute(sql);
+    }
+
+    public void deleteAuthor(int id) throws SQLException {
+        String sql="delete from author where id="+id;
+        try{
+            statement.execute(sql);
+        }catch (SQLException e){
+            System.out.println("There are books, which connect to this author. Please, delete book at first.");
+        }
+    }
+
+    public void updateBook(int id, String name,int pages,int price,String language, int id_author) throws SQLException {
+        StringBuilder sql=new StringBuilder("update book set ");
+        if (name!=null)
+            sql.append("name='"+name+"',");
+        if (pages!=0)
+            sql.append("pages="+pages+",");
+        if (price!=0)
+            sql.append("price="+price+",");
+        if (language!=null)
+            sql.append("language='"+language+"',");
+        if (id_author!=0)
+            sql.append("id_author="+id_author);
+        if (sql.charAt(sql.length()-1)==',')     //delete last ','
+            sql.deleteCharAt(sql.length()-1);
+        sql.append(" where id="+id);
+        statement.execute(sql.toString());
+    }
+
+    public void updateAuthor(int id,String name) throws SQLException {
+        if (name!=null){
+            String sql="update author set name='"+name+"' where id="+id;
+            statement.execute(sql);
+        }
+    }
 
     public void getAllBook() throws SQLException {
-        String sql="select b.id,b.name,b.pages,b.price,b.language,a.name as author_name from book b, author a where a.id=b.id_author";
+        String sql="select b.id,b.name,b.pages,b.price,b.language,a.name as author_name from book b, author a where a.id=b.id_author order by b.id";
         resultSet=statement.executeQuery(sql);
         System.out.println("Список книг:");
         while(resultSet.next()){
@@ -56,10 +91,8 @@ public class DatabaseHelper {
             String author=resultSet.getString("author_name");
             System.out.println(id+" "+name+" "+pages+" "+price+" "+language+" "+author);
         }
-
-
-
     }
+
     public void getAllAuthor() throws SQLException {
         String sql="select * from author";
         resultSet=statement.executeQuery(sql);
