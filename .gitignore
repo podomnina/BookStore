@@ -1,0 +1,6 @@
+#Ignore IntelliJ Idea settings
+.idea
+#Ignore file iml
+BookStore.iml
+#Ignore target folder
+target
