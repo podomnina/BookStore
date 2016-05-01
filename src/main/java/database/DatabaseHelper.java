@@ -1,11 +1,14 @@
 package database;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.*;
 
 public class DatabaseHelper {
 
+    private static final Logger log=LoggerFactory.getLogger(DatabaseHelper.class);
     private static Connection connection = null;
     private static ResultSet resultSet = null;
     private static Statement statement = null;
@@ -21,35 +24,41 @@ public class DatabaseHelper {
         ds.setPassword("polina");
         connection = ds.getConnection( );
         statement = connection.createStatement();
+        log.info("Database connected");
     }
 
     public void closeDatabase() throws SQLException {
         connection.close();
+        log.info("Database closed");
     }
 
     public void insertBook(String name,int pages,int price, String language, int id_author) throws SQLException {
         String sql="insert into book (id, name,pages,price,language,id_author) " +
                 "values (book_seq.nextval, '" + name + "', " + pages + ", " + price + ", '" + language + "', " + id_author + ") ";
         statement.execute(sql);
+        log.info("New book record was inserted");
     }
 
     public void insertAuthor(String name) throws SQLException {
         String sql="insert into author (id, name) " +
                 "values (author_seq.nextval, '" + name + "') ";
         statement.execute(sql);
+        log.info("New author record was inserted");
     }
 
     public void deleteBook(int id) throws SQLException {
         String sql="delete from book where id="+id;
         statement.execute(sql);
+        log.info("Record number " + id + " was deleted");
     }
 
     public void deleteAuthor(int id) throws SQLException {
         String sql="delete from author where id="+id;
         try{
             statement.execute(sql);
+            log.info("Record number " + id + " was deleted");
         }catch (SQLException e){
-            System.out.println("There are books, which connect to this author. Please, delete book at first.");
+            log.info("There are books, which connect to this author. Please, delete book at first.");
         }
     }
 
@@ -69,12 +78,14 @@ public class DatabaseHelper {
             sql.deleteCharAt(sql.length()-1);
         sql.append(" where id="+id);
         statement.execute(sql.toString());
+        log.info("Record number " + id + " was updated");
     }
 
     public void updateAuthor(int id,String name) throws SQLException {
         if (name!=null){
             String sql="update author set name='"+name+"' where id="+id;
             statement.execute(sql);
+            log.info("Record number "+ id +" was updated");
         }
     }
 
