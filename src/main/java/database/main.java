@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class main {
 
 
-    public static void main(String []args) throws SQLException, ClassNotFoundException {
+   /* public static void main(String []args) throws SQLException, ClassNotFoundException {
         DatabaseHelper db=new DatabaseHelper();
         db.connectDatabase();
         //db.insertAuthor("Васильев Борис Львович");
@@ -18,5 +18,5 @@ public class main {
         db.getAllAuthor();
         db.getAllBook();
         db.closeDatabase();
-    }
+    }*/
 }
