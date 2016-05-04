@@ -19,12 +19,14 @@ CREATE TABLE book
 CREATE SEQUENCE author_seq
 START WITH 1
 INCREMENT BY 1
-NOMAXVALUE;
+NOMAXVALUE
+NOCACHE;
 
 CREATE SEQUENCE book_seq
 START WITH 1
 INCREMENT BY 1
-NOMAXVALUE;
+NOMAXVALUE
+NOCACHE;
 
 INSERT INTO author (id,name) VALUES (author_seq.nextval,'Достоевский Федор Михайлович');
 INSERT INTO author (id,name) VALUES (author_seq.nextval,'Пушкин Александр Сергеевич');

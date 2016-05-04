@@ -105,7 +105,7 @@ public class DatabaseHelper {
     }
 
     public void getAllAuthor() throws SQLException {
-        String sql="select * from author";
+        String sql="select * from author order by id";
         resultSet=statement.executeQuery(sql);
         System.out.println("Список авторов:");
         while(resultSet.next()){
