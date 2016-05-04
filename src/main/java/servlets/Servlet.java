@@ -56,11 +56,14 @@ public class Servlet extends HttpServlet{
         log.info("POST method");
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        log.info("REQUEST " + request.getParameter("author_name"));
+        PrintWriter pw = response.getWriter();
+        pw.println("<p>"+request.getParameter("author_name")+"</p>");
         try {
             if (request.getParameter("author_name")!=null) {
                 db.insertAuthor(request.getParameter("author_name"));
                 db.getAllAuthor();
-            } else if(!request.getParameter("book_name").equals(null)){
+            } else if(request.getParameter("book_name")!=null){
                 db.insertBook(request.getParameter("book_name"),Integer.parseInt(request.getParameter("pages")),
                         Integer.parseInt(request.getParameter("price")),request.getParameter("language"),
                         Integer.parseInt(request.getParameter("id_author")));
@@ -69,9 +72,7 @@ public class Servlet extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        str="Added author: " + request.getParameter("author_name")+"\nAdded book:"+request.getParameter("book_name");
-        response.getWriter().println("<!DOCTYPE HTML>");
-        response.getWriter().println("<html><body><p>" + str + "</p></body></html>");
+
     }
 
     @Override
