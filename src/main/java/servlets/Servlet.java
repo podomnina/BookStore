@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @WebServlet("/")
 public class Servlet extends HttpServlet{
@@ -57,22 +58,17 @@ public class Servlet extends HttpServlet{
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         log.info("REQUEST " + request.getParameter("author_name"));
-        PrintWriter pw = response.getWriter();
-        pw.println("<p>"+request.getParameter("author_name")+"</p>");
         try {
-            if (request.getParameter("author_name")!=null) {
-                db.insertAuthor(request.getParameter("author_name"));
-                db.getAllAuthor();
-            } else if(request.getParameter("book_name")!=null){
-                db.insertBook(request.getParameter("book_name"),Integer.parseInt(request.getParameter("pages")),
-                        Integer.parseInt(request.getParameter("price")),request.getParameter("language"),
-                        Integer.parseInt(request.getParameter("id_author")));
-                db.getAllBook();
-            }
+            //db.insertAuthor(request.getParameter("author_name"));
+            ArrayList<String> list = db.getAllAuthor();
+            PrintWriter pw = response.getWriter();
+            StringBuilder string = new StringBuilder();
+            for (String str:list)
+                string.append(str);
+            pw.println(string.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

@@ -1,7 +1,11 @@
 package database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Author {
+    @JsonProperty("Number")
     private int id;
+    @JsonProperty("Name")
     private String name;
 
     public Author(){}

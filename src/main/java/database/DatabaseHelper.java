@@ -1,10 +1,13 @@
 package database;
 
+import database.entities.Author;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import oracle.jdbc.pool.OracleDataSource;
 
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseHelper {
 
@@ -104,15 +107,21 @@ public class DatabaseHelper {
         }
     }
 
-    public void getAllAuthor() throws SQLException {
+    public ArrayList<String> getAllAuthor() throws SQLException, IOException {
         String sql="select * from author order by id";
         resultSet=statement.executeQuery(sql);
         System.out.println("Список авторов:");
+        ArrayList<String> authorList = new ArrayList<String>();
         while(resultSet.next()){
             int id=resultSet.getInt("id");
             String name=resultSet.getString("name");
+            Author author = new Author(id,name);
+            Converter converter=new Converter();
+            String str=converter.authorToJSON(author);
+            authorList.add(str);
             System.out.println(id+" "+name);
         }
+        return authorList;
     }
 
 

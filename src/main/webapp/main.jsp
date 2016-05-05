@@ -60,9 +60,18 @@
   }
   function outputInfo(){
     var xhttp = new XMLHttpRequest();
-
-    //document.getElementById("request_text").innerHTML = document.getElementById("author_name").value + "ETO ONO!!!";
     xhttp.open("POST", "/", true);
+    xhttp.onreadystatechange = function() {
+        if(xhttp.status == 200) {
+          if (xhttp.readyState==4) {
+            alert(xhttp.responseText);
+            var response = document.createElement("p");
+            var text = document.createTextNode(xhttp.responseText);
+            response.appendChild(text);
+            document.body.appendChild(response);
+          }
+        }
+    }
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("author_name="+encodeURIComponent(document.getElementById("author_name").value));
   }
