@@ -1,30 +1,35 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title></title>
 </head>
 <body>
+<header>
+    <h1>Книжный интернет-магазин</h1>
+</header>
+
 <table>
     <tr>
-        <td>
-            <form action="" method="POST">
-                <p>Введите имя автора: <input type="text" name="author_name"></p>
-                <input type="submit" value="Оk" />
-            </form>
-        </td>
-        <td>
-            <form action="" method="POST">
-                <p>Введите название книги: <input type="text" name="book_name"></p>
-                <p>Введите количество страниц: <input type="text" name="pages"></p>
-                <p>Введите цену: <input type="text" name="price"></p>
-                <p>Введите язык: <input type="text" name="language"></p>
-                <p>Введите id автора: <input type="text" name="id_author"></p>
-                <input type="submit" value="Оk" />
-            </form>
-        </td>
+        <th>Название книги</th>
+        <th>Количество страниц</th>
+        <th>Цена</th>
+        <th>Язык</th>
+        <th>Автор</th>
     </tr>
+    <c:forEach var="book" items="${books}">
+        <tr>
+            <td> <a href="http://localhost:8081/admin">${book.name}</a></td>
+            <td>${book.pages}</td>
+            <td>${book.price}</td>
+            <td>${book.language}</td>
+            <td>${book.author.name}</td>
+        </tr>
+    </c:forEach>
 </table>
 
+
+<footer >&#169; 2016</footer>
 </body>
 </html>

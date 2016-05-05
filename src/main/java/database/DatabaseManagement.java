@@ -1,6 +1,7 @@
 package database;
 
 import database.entities.Author;
+import database.entities.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import oracle.jdbc.pool.OracleDataSource;
@@ -8,10 +9,11 @@ import oracle.jdbc.pool.OracleDataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
-public class DatabaseHelper {
+public class DatabaseManagement {
 
-    private static final Logger log=LoggerFactory.getLogger(DatabaseHelper.class);
+    private static final Logger log=LoggerFactory.getLogger(DatabaseManagement.class);
     private static Connection connection = null;
     private static ResultSet resultSet = null;
     private static Statement statement = null;
@@ -47,6 +49,17 @@ public class DatabaseHelper {
                 "values (author_seq.nextval, '" + name + "') ";
         statement.execute(sql);
         log.info("New author record was inserted");
+    }
+
+    public void insertCustomer(String name, String email) throws SQLException{
+        String sql="insert into customer (id, name, email) values (customer_seq.nextval, '"+name+"','"+email+"')";
+        statement.execute(sql);
+        log.info("New customer record was inserted");
+    }
+
+    public void insertBooking(String name, String email, int book_id) throws SQLException{
+        String sql="";
+        log.info("New booking record was inserted");
     }
 
     public void deleteBook(int id) throws SQLException {
@@ -92,40 +105,37 @@ public class DatabaseHelper {
         }
     }
 
-    public void getAllBook() throws SQLException {
-        String sql="select b.id,b.name,b.pages,b.price,b.language,a.name as author_name from book b, author a where a.id=b.id_author order by b.id";
+    public List<Book> getAllBook() throws SQLException {
+        String sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name from book b, author a where a.id=b.id_author order by b.id";
         resultSet=statement.executeQuery(sql);
-        System.out.println("Список книг:");
+        log.info("List of books");
+        ArrayList<Book> bookList = new ArrayList<Book>();
         while(resultSet.next()){
             int id=resultSet.getInt("id");
             String name=resultSet.getString("name");
             int pages=resultSet.getInt("pages");
             int price=resultSet.getInt("price");
             String language=resultSet.getString("language");
-            String author=resultSet.getString("author_name");
-            System.out.println(id+" "+name+" "+pages+" "+price+" "+language+" "+author);
+            int authorId=resultSet.getInt("author_id");
+            String authorName=resultSet.getString("author_name");
+            Author author=new Author(authorId,authorName);
+            Book book = new Book(id,name,pages,price,language,author);
+            bookList.add(book);
         }
+        return bookList;
     }
 
-    public ArrayList<String> getAllAuthor() throws SQLException, IOException {
+    public List<Author> getAllAuthor() throws SQLException, IOException {
         String sql="select * from author order by id";
         resultSet=statement.executeQuery(sql);
-        System.out.println("Список авторов:");
-        ArrayList<String> authorList = new ArrayList<String>();
+        log.info("List of authors");
+        ArrayList<Author> authorList = new ArrayList<Author>();
         while(resultSet.next()){
             int id=resultSet.getInt("id");
             String name=resultSet.getString("name");
             Author author = new Author(id,name);
-            Converter converter=new Converter();
-            String str=converter.authorToJSON(author);
-            authorList.add(str);
-            System.out.println(id+" "+name);
+            authorList.add(author);
         }
         return authorList;
     }
-
-
-
-
-
 }

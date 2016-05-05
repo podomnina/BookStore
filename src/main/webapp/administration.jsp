@@ -85,5 +85,6 @@
     <button onclick="">Добавить новую книгу</button>
     <button onclick="">Удалить книгу</button>
     <button onclick="">Обновить данные книги</button>
+    <button onclick="">Список заказов</button>
 </body>
 </html>
