@@ -105,8 +105,19 @@ public class DatabaseManagement {
         }
     }
 
-    public List<Book> getAllBook() throws SQLException {
-        String sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name from book b, author a where a.id=b.id_author order by b.id";
+    public List<Book> getAllBook(String bookReq, String authorReq) throws SQLException {
+        String sql;
+        if (bookReq!=null)
+            sql="select b.id,b.NAME,b.PAGES,b.PRICE,b.LANGUAGE,a.id as author_id,a.name as author_name from book b, author a " +
+                    "where b.ID_AUTHOR = a.ID and LOWER(b.NAME) LIKE LOWER('%"+bookReq+"%') order by b.id";
+        else
+        if (authorReq!=null)
+            sql="select b.id,b.NAME,b.PAGES,b.PRICE,b.LANGUAGE,a.id as author_id,a.name as author_name from book b, author a " +
+                    "where b.ID_AUTHOR = a.ID and b.id_author in " +
+                    "(select id from author where LOWER(NAME) LIKE LOWER('%"+authorReq+"%')) order by b.id";
+        else
+            sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name " +
+                    "from book b, author a where a.id=b.id_author order by b.id";
         resultSet=statement.executeQuery(sql);
         log.info("List of books");
         ArrayList<Book> bookList = new ArrayList<Book>();

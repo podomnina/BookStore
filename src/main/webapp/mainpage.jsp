@@ -7,10 +7,12 @@
 </head>
 <body>
 <header>
-    <h1>Книжный интернет-магазин</h1>
+    <h1 align="center">Книжный интернет-магазин</h1>
 </header>
 
-<table>
+<button onclick="location.href='http://localhost:8081/search'">Поиск</button>
+
+<table border="1">
     <tr>
         <th>Название книги</th>
         <th>Количество страниц</th>

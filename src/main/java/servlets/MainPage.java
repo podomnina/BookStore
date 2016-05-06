@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet("/main")
@@ -21,7 +22,7 @@ public class MainPage extends HttpServlet {
 
     @Override
     public void init() {
-        log.info("Administration servlet initialization...");
+        log.info("MainPage servlet initialization...");
         db = new DatabaseManagement();
         try {
             db.connectDatabase();
@@ -30,7 +31,7 @@ public class MainPage extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        log.info("Administration servlet was initialized!");
+        log.info("MainPage servlet was initialized!");
     }
 
     @Override
@@ -39,9 +40,8 @@ public class MainPage extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            request.setAttribute("books", db.getAllBook());
+            request.setAttribute("books", db.getAllBook(null,null));
             getServletContext().getRequestDispatcher("/mainpage.jsp").forward(request, response);
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,17 +50,23 @@ public class MainPage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //doGet(request, response);
+        log.info("POST method");
+        PrintWriter out = response.getWriter();
+        try {
+            response.sendRedirect("http://localhost://8081/admin");
+        }finally {
+            out.close();
+        }
     }
 
     @Override
     public void destroy(){
-        log.info("Administration servlet destroying...");
+        log.info("MainPage servlet destroying...");
         try {
             db.closeDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        log.info("Administration servlet was destroyed!");
+        log.info("MainPage servlet was destroyed!");
     }
 }

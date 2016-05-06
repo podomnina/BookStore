@@ -20,7 +20,7 @@ public class main {
         for (Author str:list)
             System.out.println(str);
 
-        db.getAllBook();
+        db.getAllBook("","");
         db.closeDatabase();
     }
 }

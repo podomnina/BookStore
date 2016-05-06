@@ -1,8 +1,8 @@
 package servlets;
 
-
 import database.DatabaseManagement;
 import database.entities.Author;
+import database.entities.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,14 +17,14 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/admin")
-public class Administration extends HttpServlet{
+@WebServlet("/search")
+public class Search extends HttpServlet {
     DatabaseManagement db;
-    private static final Logger log= LoggerFactory.getLogger(DatabaseManagement.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseManagement.class);
 
     @Override
     public void init() {
-        log.info("Administration servlet initialization...");
+        log.info("Search servlet initialization...");
         db = new DatabaseManagement();
         try {
             db.connectDatabase();
@@ -33,7 +33,7 @@ public class Administration extends HttpServlet{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        log.info("Administration servlet was initialized!");
+        log.info("Search servlet was initialized!");
     }
 
     @Override
@@ -43,8 +43,7 @@ public class Administration extends HttpServlet{
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            request.setAttribute("authors", db.getAllAuthor());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/administration.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/search.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,31 +56,40 @@ public class Administration extends HttpServlet{
         log.info("POST method");
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        log.info("REQUEST " + request.getParameter("author_name"));
+        log.info("REQUEST: " + request.getParameter("text") +
+                " " + request.getParameter("bookRB") + " " + request.getParameter("authorRB"));
         try {
-            //db.insertAuthor(request.getParameter("author_name"));
+            String valBook=null,valAuthor=null;
+            if (request.getParameter("bookRB").equals("book"))
+                valBook=request.getParameter("text");
+            else if (request.getParameter("authorRB").equals("author"))
+                valAuthor=request.getParameter("text");
 
-            List<Author> list = db.getAllAuthor();
+            List<Book> list = db.getAllBook(valBook,valAuthor);
+            request.setAttribute("books", list);
             PrintWriter pw = response.getWriter();
-            StringBuilder string = new StringBuilder();
-            for (Author author:list)
-                string.append(author.getName()+"\n");
-            pw.println(string.toString());
+            if (list.size()==0)
+                pw.print("По запросу '"+request.getParameter("text")+"' ничего не найдено");
+            else {
+                StringBuilder string = new StringBuilder();
+                for (Book book : list)
+                    string.append(book.getName());
+                pw.println(string.toString());
+
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void destroy(){
-        log.info("Administration servlet destroying...");
+    public void destroy() {
+        log.info("Search servlet destroying...");
         try {
             db.closeDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        log.info("Administration servlet was destroyed!");
+        log.info("Search servlet was destroyed!");
     }
-
 }
-
