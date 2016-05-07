@@ -14,13 +14,7 @@ public class main {
 
 
    public static void main(String []args) throws SQLException, ClassNotFoundException, IOException {
-        DatabaseManagement db=new DatabaseManagement();
-        db.connectDatabase();
-        List<Author> list = db.getAllAuthor();
-        for (Author str:list)
-            System.out.println(str);
-
-        db.getAllBook("","");
-        db.closeDatabase();
+        MakeFileURL m=new MakeFileURL();
+       m.getURL("C:\\JetBrainsUltimateProj\\Server\\images\\1.jpg");
     }
 }

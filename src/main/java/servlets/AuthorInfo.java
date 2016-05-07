@@ -4,25 +4,23 @@ import database.DatabaseManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-@WebServlet("/main")
-public class MainPage extends HttpServlet {
+@WebServlet("/authorinfo")
+public class AuthorInfo extends HttpServlet {
     private static final Logger log= LoggerFactory.getLogger(DatabaseManagement.class);
     private DatabaseManagement db;
 
     @Override
     public void init() {
-        log.info("MainPage servlet initialization...");
+        log.info("AuthorInfo servlet initialization...");
         db = new DatabaseManagement();
         try {
             db.connectDatabase();
@@ -31,7 +29,7 @@ public class MainPage extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        log.info("MainPage servlet was initialized!");
+        log.info("AuthorInfo servlet was initialized!");
     }
 
     @Override
@@ -40,9 +38,10 @@ public class MainPage extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            request.setAttribute("books", db.getAllBook(null,null,0));
-            //log.info("req: "+request.getParameter("name"));
-            getServletContext().getRequestDispatcher("/mainpage.jsp").forward(request, response);
+            log.info("author id: " + Integer.parseInt(request.getParameter("id")));
+            request.setAttribute("books", db.getAllBook(null,null,Integer.parseInt(request.getParameter("id"))));
+            request.setAttribute("author", db.getOneAuthor(Integer.parseInt(request.getParameter("id"))));
+            getServletContext().getRequestDispatcher("/authorinfo.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,25 +51,17 @@ public class MainPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("POST method");
-        PrintWriter out = response.getWriter();
-        try {
-            if(request.getParameter("name").equals("book"))
-                response.sendRedirect("/bookinfo");
-            else if (request.getParameter("name").equals("author"))
-                response.sendRedirect("/authorinfo");
-        }finally {
-            out.close();
-        }
+
     }
 
     @Override
     public void destroy(){
-        log.info("MainPage servlet destroying...");
+        log.info("AuthorInfo servlet destroying...");
         try {
             db.closeDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        log.info("MainPage servlet was destroyed!");
+        log.info("AuthorInfo servlet was destroyed!");
     }
 }

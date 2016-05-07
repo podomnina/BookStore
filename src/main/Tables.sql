@@ -7,7 +7,8 @@ CREATE TABLE author
 CREATE TABLE book
 (
   id    NUMBER,
-  name         VARCHAR2(255),
+  url   VARCHAR2(255),
+  name  VARCHAR2(255),
   pages   NUMBER,
   price   NUMBER,
   language  VARCHAR2(255),
@@ -62,6 +63,6 @@ INSERT INTO author (id,name) VALUES (author_seq.nextval,'Джек Лондон');
 INSERT INTO author (id,name) VALUES (author_seq.nextval,'Агата Кристи');
 INSERT INTO author (id,name) VALUES (author_seq.nextval,'Булгаков Михаил Афанасьевич');
 
-INSERT INTO book (id,name,pages,price,language,id_author) VALUES (book_seq.nextval,'Преступление и наказание',608,200,'русский',1);
-INSERT INTO book (id,name,pages,price,language,id_author) VALUES (book_seq.nextval,'Евгений Онегин',352,100,'русский',2);
-INSERT INTO book (id,name,pages,price,language,id_author) VALUES (book_seq.nextval,'Собачье сердце',640,250,'русский',5);
+INSERT INTO book (id,name,pages,price,language,id_author) VALUES (book_seq.nextval,'C:\JetBrainsUltimateProj\Server\images\1.jpg','Преступление и наказание',608,200,'русский',1);
+INSERT INTO book (id,name,pages,price,language,id_author) VALUES (book_seq.nextval,'C:\JetBrainsUltimateProj\Server\images\2.jpg','Евгений Онегин',352,100,'русский',2);
+INSERT INTO book (id,name,pages,price,language,id_author) VALUES (book_seq.nextval,'C:\JetBrainsUltimateProj\Server\images\3.jpg','Собачье сердце',640,250,'русский',5);

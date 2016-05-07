@@ -65,16 +65,14 @@ public class Search extends HttpServlet {
             else if (request.getParameter("authorRB").equals("author"))
                 valAuthor=request.getParameter("text");
 
-            List<Book> list = db.getAllBook(valBook,valAuthor);
-            request.setAttribute("books", list);
+            List<Book> list = db.getAllBook(valBook,valAuthor,0);
             PrintWriter pw = response.getWriter();
             if (list.size()==0)
                 pw.print("По запросу '"+request.getParameter("text")+"' ничего не найдено");
             else {
-                StringBuilder string = new StringBuilder();
-                for (Book book : list)
-                    string.append(book.getName());
-                pw.println(string.toString());
+                //pw.println("Результат поиска:");
+                request.setAttribute("books", list);
+                pw.println(list);
 
             }
         } catch (SQLException e) {

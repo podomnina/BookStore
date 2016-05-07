@@ -1,5 +1,7 @@
 package database;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import database.entities.Author;
 import database.entities.Book;
 import org.slf4j.Logger;
@@ -105,8 +107,12 @@ public class DatabaseManagement {
         }
     }
 
-    public List<Book> getAllBook(String bookReq, String authorReq) throws SQLException {
+    public List<Book> getAllBook(String bookReq, String authorReq, int value) throws SQLException {
         String sql;
+        if (value!=0)
+            sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name " +
+                    "from book b, author a where a.id=b.id_author and a.id="+value+" order by b.id";
+        else
         if (bookReq!=null)
             sql="select b.id,b.NAME,b.PAGES,b.PRICE,b.LANGUAGE,a.id as author_id,a.name as author_name from book b, author a " +
                     "where b.ID_AUTHOR = a.ID and LOWER(b.NAME) LIKE LOWER('%"+bookReq+"%') order by b.id";
@@ -148,5 +154,47 @@ public class DatabaseManagement {
             authorList.add(author);
         }
         return authorList;
+    }
+
+    public Book getOneBook(int value) throws SQLException, IOException {
+        String sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name " +
+                "from book b, author a where a.id=b.id_author and b.id="+value;
+        resultSet=statement.executeQuery(sql);
+        log.info("One book record");
+        Book book=null;
+        while(resultSet.next()){
+            int id=resultSet.getInt("id");
+            String name=resultSet.getString("name");
+            int pages=resultSet.getInt("pages");
+            int price=resultSet.getInt("price");
+            String language=resultSet.getString("language");
+            int authorId=resultSet.getInt("author_id");
+            String authorName=resultSet.getString("author_name");
+            Author author=new Author(authorId,authorName);
+            book = new Book(id,name,pages,price,language,author);
+        }
+        return book;
+    }
+
+    public Author getOneAuthor(int value) throws SQLException, IOException {
+        String sql="select * from author where id="+value;
+        resultSet=statement.executeQuery(sql);
+        log.info("One author record");
+        Author author=null;
+        while(resultSet.next()){
+            int id=resultSet.getInt("id");
+            String name=resultSet.getString("name");
+            author = new Author(id,name);
+        }
+        return author;
+    }
+
+    public String convertToJSON(List<Book> list) throws JsonProcessingException {
+        StringBuffer buf=new StringBuffer();
+        for (Book book:list) {
+            ObjectMapper mapper = new ObjectMapper();
+            buf.append(mapper.writeValueAsString(book));
+        }
+        return buf.toString();
     }
 }

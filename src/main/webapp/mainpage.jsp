@@ -10,6 +10,19 @@
     <h1 align="center">Книжный интернет-магазин</h1>
 </header>
 
+<script>
+    function move(el){
+        var URL;
+        if (el.getAttribute("name")=="book")
+            URL="http://localhost:8081/bookinfo?id="+encodeURIComponent(el.getAttribute("id"));
+        else
+        if (el.getAttribute("name")=="author")
+            URL="http://localhost:8081/authorinfo?id="+encodeURIComponent(el.getAttribute("id"));
+        el.setAttribute("href",URL);
+        alert("URL: "+URL);
+    }
+</script>
+
 <button onclick="location.href='http://localhost:8081/search'">Поиск</button>
 
 <table border="1">
@@ -22,11 +35,11 @@
     </tr>
     <c:forEach var="book" items="${books}">
         <tr>
-            <td> <a href="http://localhost:8081/admin">${book.name}</a></td>
+            <td> <a  id="${book.id}" name="book" href="" onclick="move(this)">${book.name}</a></td>
             <td>${book.pages}</td>
             <td>${book.price}</td>
             <td>${book.language}</td>
-            <td>${book.author.name}</td>
+            <td><a id="${book.author.id}" name="author" href="" onclick="move(this)">${book.author.name}</a></td>
         </tr>
     </c:forEach>
 </table>
