@@ -6,6 +6,7 @@ import database.entities.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +21,8 @@ import java.util.List;
 @WebServlet("/search")
 public class Search extends HttpServlet {
     DatabaseManagement db;
+    @Inject
+    List<Book> list;
     private static final Logger log = LoggerFactory.getLogger(DatabaseManagement.class);
 
     @Override
@@ -43,6 +46,7 @@ public class Search extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("/search.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
@@ -65,21 +69,25 @@ public class Search extends HttpServlet {
             else if (request.getParameter("authorRB").equals("author"))
                 valAuthor=request.getParameter("text");
 
-            List<Book> list = db.getAllBook(valBook,valAuthor,0);
+            list = db.getAllBook(valBook,valAuthor,0);
             PrintWriter pw = response.getWriter();
-            if (list.size()==0)
+            if (list.size()==0) {
+                request.setAttribute("resp", "По запросу '" + request.getParameter("text") + "' ничего не найдено");
                 pw.print("По запросу '"+request.getParameter("text")+"' ничего не найдено");
+            }
             else {
-                //pw.println("Результат поиска:");
-                request.setAttribute("books", list);
-                pw.println(list);
+
+                try {
+
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     @Override
     public void destroy() {
         log.info("Search servlet destroying...");

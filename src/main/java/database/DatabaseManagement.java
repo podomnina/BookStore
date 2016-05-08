@@ -156,9 +156,14 @@ public class DatabaseManagement {
         return authorList;
     }
 
-    public Book getOneBook(int value) throws SQLException, IOException {
-        String sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name " +
+    public Book getOneBook(int value, String bookName) throws SQLException, IOException {
+        String sql=null;
+        if (value!=0)
+            sql="select b.id,b.name,b.pages,b.price,b.language,a.id as author_id,a.name as author_name " +
                 "from book b, author a where a.id=b.id_author and b.id="+value;
+        else if (bookName!=null)
+            sql="select b.id,b.NAME,b.PAGES,b.PRICE,b.LANGUAGE,a.id as author_id,a.name as author_name from book b, author a " +
+                    "where b.ID_AUTHOR = a.ID and LOWER(b.NAME) LIKE LOWER('%"+bookName+"%')";
         resultSet=statement.executeQuery(sql);
         log.info("One book record");
         Book book=null;
@@ -189,12 +194,4 @@ public class DatabaseManagement {
         return author;
     }
 
-    public String convertToJSON(List<Book> list) throws JsonProcessingException {
-        StringBuffer buf=new StringBuffer();
-        for (Book book:list) {
-            ObjectMapper mapper = new ObjectMapper();
-            buf.append(mapper.writeValueAsString(book));
-        }
-        return buf.toString();
-    }
 }

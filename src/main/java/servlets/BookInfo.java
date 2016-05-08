@@ -38,8 +38,14 @@ public class BookInfo extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-            log.info("book id: "+Integer.parseInt(request.getParameter("id")));
-            request.setAttribute("book", db.getOneBook(Integer.parseInt(request.getParameter("id"))));
+            if (request.getParameter("id")!=null) {
+                log.info("book id: " + Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("book", db.getOneBook(Integer.parseInt(request.getParameter("id")),null));
+            }
+            if (request.getParameter("name")!=null){
+                log.info("book name: " + request.getParameter("name"));
+                request.setAttribute("book", db.getOneBook(0,(request.getParameter("name"))));
+            }
             getServletContext().getRequestDispatcher("/bookinfo.jsp").forward(request, response);
 
         } catch (Exception e) {
