@@ -82,13 +82,13 @@ public class DatabaseManagement {
 
     public void updateBook(int id, String name,int pages,int price,String language, int id_author) throws SQLException {
         StringBuilder sql=new StringBuilder("update book set ");
-        if (name!=null)
+        if (!name.equals(""))
             sql.append("name='"+name+"',");
         if (pages!=0)
             sql.append("pages="+pages+",");
         if (price!=0)
             sql.append("price="+price+",");
-        if (language!=null)
+        if (!language.equals(""))
             sql.append("language='"+language+"',");
         if (id_author!=0)
             sql.append("id_author="+id_author);
@@ -100,7 +100,7 @@ public class DatabaseManagement {
     }
 
     public void updateAuthor(int id,String name) throws SQLException {
-        if (name!=null){
+        if (!name.equals("")){
             String sql="update author set name='"+name+"' where id="+id;
             statement.execute(sql);
             log.info("Record number "+ id +" was updated");
