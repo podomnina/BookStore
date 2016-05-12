@@ -6,6 +6,7 @@
   <title></title>
 </head>
 <body>
+<button onclick="location.href='http://localhost:8081/main'">На главную страницу</button>
 <h1 align="center"><c:out value="${author.name}"/></h1>
 <table cellpadding="20" align="center" border="1">
   <tr>

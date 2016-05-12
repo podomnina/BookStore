@@ -19,7 +19,8 @@
   }
 </script>
 
-<table border="1">
+<button onclick="location.href='http://localhost:8081/main'">На главную страницу</button>
+<table border="1" align="center">
   <tr>
     <th>Название книги</th>
     <th>Количество страниц</th>

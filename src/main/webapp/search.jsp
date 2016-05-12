@@ -27,11 +27,12 @@
           if (xhttp.responseText != resp) {
             var URL;
             if (bookRB == "book")
-              URL = "http://localhost:8081/bookinfo?name=" + encodeURIComponent(document.getElementById("text").value);
+              URL = "http://localhost:8081/searchresult?q="+encodeURIComponent("book") +
+            "&name=" + encodeURIComponent(document.getElementById("text").value);
             else if (authorRB == "author")
-              URL = "http://localhost:8081/authorinfo?name=" + encodeURIComponent(document.getElementById("text").value);
-            document.getElementById("button").setAttribute("href", URL);
-            //alert("URL: " + URL);
+              URL = "http://localhost:8081/searchresult?q="+encodeURIComponent("author") +
+                      "&name=" + encodeURIComponent(document.getElementById("text").value);
+            alert("URL: " + URL);
             return location.href = URL;
           } else {
             var p=document.getElementById("responseText");

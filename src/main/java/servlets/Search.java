@@ -21,8 +21,6 @@ import java.util.List;
 @WebServlet("/search")
 public class Search extends HttpServlet {
     DatabaseManagement db;
-    @Inject
-    List<Book> list;
     private static final Logger log = LoggerFactory.getLogger(DatabaseManagement.class);
 
     @Override
@@ -69,20 +67,11 @@ public class Search extends HttpServlet {
             else if (request.getParameter("authorRB").equals("author"))
                 valAuthor=request.getParameter("text");
 
-            list = db.getAllBook(valBook,valAuthor,0);
+            List<Book> list = db.getAllBook(valBook,valAuthor,0);
             PrintWriter pw = response.getWriter();
             if (list.size()==0) {
                 request.setAttribute("resp", "По запросу '" + request.getParameter("text") + "' ничего не найдено");
                 pw.print("По запросу '"+request.getParameter("text")+"' ничего не найдено");
-            }
-            else {
-
-                try {
-
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
