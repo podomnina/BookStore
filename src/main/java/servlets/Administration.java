@@ -62,15 +62,17 @@ public class Administration extends HttpServlet{
         request.getParameter("book_name") + " pages=" + request.getParameter("pages") + " price=" + request.getParameter("price") +
         " language=" + request.getParameter("language") + " author_id=" + request.getParameter("author_id") +
         " author_name=" + request.getParameter("author_name"));
+        PrintWriter pw = response.getWriter();
         try {
-            PrintWriter pw = response.getWriter();
             if (request.getParameter("button").equals("createAuthor")){
                 db.insertAuthor(request.getParameter("author_name"));
                 pw.println("Добавлен новый автор:" + request.getParameter("author_name"));
             }else
             if (request.getParameter("button").equals("removeAuthor")){
-                db.deleteAuthor(Integer.parseInt(request.getParameter("author_id")));
-                pw.println("Автор с id:" + request.getParameter("author_id") + "удален");
+                boolean delete=db.deleteAuthor(Integer.parseInt(request.getParameter("author_id")));
+                if (delete)
+                    pw.println("Автор с id:" + request.getParameter("author_id") + "удален");
+                else pw.println("Автора невозможно удалить, так как существует книга, связанная с ним");
             }else
             if (request.getParameter("button").equals("updateAuthor")){
                 db.updateAuthor(Integer.parseInt(request.getParameter("author_id")),request.getParameter("author_name"));
@@ -88,21 +90,34 @@ public class Administration extends HttpServlet{
             }else
             if (request.getParameter("button").equals("updateBook")){
                 int id=Integer.parseInt(request.getParameter("book_id"));
-                String name=request.getParameter("book_name");
-                int pages=Integer.parseInt(request.getParameter("pages"));
-                int price=Integer.parseInt(request.getParameter("price"));
-                String lang=request.getParameter("language");
-                int auth_id=Integer.parseInt(request.getParameter("author_id"));
-                db.updateBook(id,name,pages,price,lang,auth_id);
+                int pages;
+                try{
+                    pages = Integer.parseInt(request.getParameter("pages"));
+                }catch (NumberFormatException e){
+                    pages=0;
+                }
+                int price;
+                try {
+                    price=Integer.parseInt(request.getParameter("price"));
+                }catch (NumberFormatException e){
+                    price=0;
+                }
+                int author_id;
+                try{
+                    author_id=Integer.parseInt(request.getParameter("author_id"));
+                }catch (NumberFormatException e){
+                    author_id=0;
+                }
+                db.updateBook(id,request.getParameter("book_name"),pages,price,request.getParameter("language"),author_id);
                 pw.println("Книга с id:"+request.getParameter("book_id")+" обновлена");
-
-                //если все поля пустые, int.parseInt("пустота") доделать
             }
 
 
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NumberFormatException e){
+            pw.println("Ошибка ввода. Должно быть введено целое число");
         }
     }
 

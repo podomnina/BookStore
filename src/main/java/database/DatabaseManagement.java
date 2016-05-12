@@ -70,14 +70,18 @@ public class DatabaseManagement {
         log.info("Record number " + id + " was deleted");
     }
 
-    public void deleteAuthor(int id) throws SQLException {
-        String sql="delete from author where id="+id;
-        try{
-            statement.execute(sql);
-            log.info("Record number " + id + " was deleted");
-        }catch (SQLException e){
-            log.info("There are books, which connect to this author. Please, delete book at first.");
+    public boolean deleteAuthor(int id) throws SQLException {
+        if (!checkAuthorDependencies(id)) {
+            String sql = "delete from author where id=" + id;
+            try {
+                statement.execute(sql);
+                log.info("Record number " + id + " was deleted");
+                return true;
+            } catch (SQLException e) {
+                log.info("There are books, which connect to this author. Please, delete book at first.");
+            }
         }
+        return false;
     }
 
     public void updateBook(int id, String name,int pages,int price,String language, int id_author) throws SQLException {
@@ -192,6 +196,21 @@ public class DatabaseManagement {
             author = new Author(id,name);
         }
         return author;
+    }
+
+    public boolean checkAuthorDependencies(int id) throws SQLException {
+        String sql="select a.id as id from book b,author a where a.id=b.id_author";
+        resultSet=statement.executeQuery(sql);
+        List<Integer> list = new ArrayList<Integer>();
+        while(resultSet.next()){
+            int value=resultSet.getInt("id");
+            list.add(value);
+        }
+        for (Integer val:list){
+            if (val.equals(id))
+                return true;
+        }
+        return false;
     }
 
 }
