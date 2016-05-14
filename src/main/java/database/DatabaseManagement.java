@@ -1,9 +1,6 @@
 package database;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import database.entities.Author;
-import database.entities.Book;
+import database.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import oracle.jdbc.pool.OracleDataSource;
@@ -60,7 +57,10 @@ public class DatabaseManagement {
     }
 
     public void insertBooking(String name, String email, int book_id) throws SQLException{
-        String sql="";
+        insertCustomer(name,email);
+        int customer_id=getCustomerId(name,email);
+        String sql="insert into booking (id,id_customer,id_book) values (booking_seq.nextval, "+customer_id+","+book_id+")";
+        statement.execute(sql);
         log.info("New booking record was inserted");
     }
 
@@ -198,6 +198,56 @@ public class DatabaseManagement {
         return author;
     }
 
+    public int getCustomerId(String name,String email) throws SQLException {
+        String sql="select id from customer where name='"+name+"' and email='"+email+"'";
+        resultSet=statement.executeQuery(sql);
+        int id=0;
+        while(resultSet.next()){
+            id=resultSet.getInt("id");
+        }
+        return id;
+    }
+
+    public int getBookingId(String name,String email,int book_id) throws SQLException {
+        int customer_id=getCustomerId(name,email);
+        String sql="select id from booking where id_customer="+customer_id+" and id_book="+book_id;
+        resultSet=statement.executeQuery(sql);
+        int id=0;
+        while (resultSet.next()){
+            id=resultSet.getInt("id");
+        }
+        return id;
+    }
+
+    public List<Booking> getAllBooking(int val) throws SQLException {
+        StringBuilder sql= new StringBuilder("select o.ID,o.ID_CUSTOMER,c.name as customer,c.email, o.id_book,b.name, b.pages,b.price,b.language,b.id_author,a.name as author " +
+                "from booking o,book b, customer c, author a where o.id_customer=c.id and b.id=o.id_book and b.id_author=a.id");
+        if (val!=0) {
+            sql.append(" and o.id=" + val);
+        }
+        resultSet=statement.executeQuery(sql.toString());
+        ArrayList<Booking> list = new ArrayList<>();
+        while (resultSet.next()){
+            int id=resultSet.getInt("id");
+            int idCustomer=resultSet.getInt("id_customer");
+            String customerName=resultSet.getString("customer");
+            String email=resultSet.getString("email");
+            int idBook=resultSet.getInt("id_book");
+            String bookName=resultSet.getString("name");
+            int pages=resultSet.getInt("pages");
+            int price=resultSet.getInt("price");
+            String language=resultSet.getString("language");
+            int idAuthor=resultSet.getInt("id_author");
+            String authorName=resultSet.getString("author");
+            Customer customer=new Customer(idCustomer,customerName,email);
+            Author author=new Author(idAuthor,authorName);
+            Book book=new Book(idBook,bookName,pages,price,language,author);
+            Booking booking=new Booking(id,book,customer);
+            list.add(booking);
+        }
+        return list;
+    }
+
     public boolean checkAuthorDependencies(int id) throws SQLException {
         String sql="select a.id as id from book b,author a where a.id=b.id_author";
         resultSet=statement.executeQuery(sql);
@@ -212,5 +262,4 @@ public class DatabaseManagement {
         }
         return false;
     }
-
 }

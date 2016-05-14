@@ -4,16 +4,12 @@ import database.DatabaseManagement;
 import database.entities.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -50,7 +46,6 @@ public class SearchResult extends HttpServlet {
             request.setAttribute("books", list);
             log.info("req: " + request.getParameter("name"));
             getServletContext().getRequestDispatcher("/searchresult.jsp").forward(request, response);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,14 +3,11 @@ package servlets;
 import database.DatabaseManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -41,25 +38,9 @@ public class MainPage extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             request.setAttribute("books", db.getAllBook(null,null,0));
-            //log.info("req: "+request.getParameter("name"));
             getServletContext().getRequestDispatcher("/mainpage.jsp").forward(request, response);
-
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("POST method");
-        PrintWriter out = response.getWriter();
-        try {
-            if(request.getParameter("name").equals("book"))
-                response.sendRedirect("/bookinfo");
-            else if (request.getParameter("name").equals("author"))
-                response.sendRedirect("/authorinfo");
-        }finally {
-            out.close();
         }
     }
 

@@ -1,12 +1,9 @@
 package servlets;
 
 import database.DatabaseManagement;
-import database.entities.Author;
-import database.entities.Book;
+import database.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,7 +41,6 @@ public class Search extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
-
             RequestDispatcher dispatcher = request.getRequestDispatcher("/search.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
@@ -66,7 +62,6 @@ public class Search extends HttpServlet {
                 valBook=request.getParameter("text");
             else if (request.getParameter("authorRB").equals("author"))
                 valAuthor=request.getParameter("text");
-
             List<Book> list = db.getAllBook(valBook,valAuthor,0);
             PrintWriter pw = response.getWriter();
             if (list.size()==0) {

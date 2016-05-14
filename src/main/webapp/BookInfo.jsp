@@ -6,9 +6,10 @@
     <title></title>
 </head>
 <body>
+<button onclick="location.href='http://localhost:8081/main'">На главную страницу</button>
 <table border="1" align="center" cellpadding="20" cellspacing="0" width="70%">
   <tr>
-    <td rowspan="6"><img src="URL" alt="Обложка" /></td>
+    <td rowspan="6"><img src="http://localhost:8081/images/1.jpg" alt="Обложка" /></td>
     <th colspan="2"><h1><c:out value="${book.name}"/></h1></th>
   </tr>
   <tr>
@@ -24,7 +25,7 @@
     <td>Цена</td><td><c:out value="${book.price}"/></td>
   </tr>
   <tr align="center">
-    <td colspan="2"><button onclick="location.href=''">Добавить в корзину</button></td>
+    <td colspan="2"><button onclick="location.href='http://localhost:8081/order?id=${book.id}'">Добавить в корзину</button></td>
   </tr>
 </table>
 </body>

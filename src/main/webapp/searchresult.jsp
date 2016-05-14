@@ -15,7 +15,6 @@
     if (el.getAttribute("name")=="author")
       URL="http://localhost:8081/authorinfo?id="+encodeURIComponent(el.getAttribute("id"));
     el.setAttribute("href",URL);
-    alert("URL: "+URL);
   }
 </script>
 

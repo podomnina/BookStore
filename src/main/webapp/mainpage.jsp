@@ -25,7 +25,7 @@
 
 <button onclick="location.href='http://localhost:8081/search'">Поиск</button>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>Название книги</th>
         <th>Количество страниц</th>
@@ -45,6 +45,6 @@
 </table>
 
 
-<footer >&#169; 2016</footer>
+<footer valign="bottom">BookStore &#169; 2016</footer>
 </body>
 </html>

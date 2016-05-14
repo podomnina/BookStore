@@ -2,7 +2,6 @@ package servlets;
 
 
 import database.DatabaseManagement;
-import database.entities.Author;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/admin")
 public class Administration extends HttpServlet{
@@ -111,9 +109,6 @@ public class Administration extends HttpServlet{
                 db.updateBook(id,request.getParameter("book_name"),pages,price,request.getParameter("language"),author_id);
                 pw.println("Книга с id:"+request.getParameter("book_id")+" обновлена");
             }
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NumberFormatException e){
@@ -131,6 +126,5 @@ public class Administration extends HttpServlet{
         }
         log.info("Administration servlet was destroyed!");
     }
-
 }
 

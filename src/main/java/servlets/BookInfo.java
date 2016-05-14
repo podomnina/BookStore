@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet("/bookinfo")
@@ -47,16 +46,9 @@ public class BookInfo extends HttpServlet {
                 request.setAttribute("book", db.getOneBook(0,(request.getParameter("name"))));
             }
             getServletContext().getRequestDispatcher("/bookinfo.jsp").forward(request, response);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("POST method");
-
     }
 
     @Override

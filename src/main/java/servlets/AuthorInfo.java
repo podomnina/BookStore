@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/authorinfo")
@@ -58,12 +56,6 @@ public class AuthorInfo extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("POST method");
-
     }
 
     @Override

@@ -96,7 +96,6 @@
       form.appendChild(language);
       form.appendChild(authorId);
     }
-
     var button=document.createElement("input");
     button.setAttribute("type","submit");
     button.setAttribute("value","Ok");
@@ -115,10 +114,8 @@
     xhttp.onreadystatechange = function() {
       if(xhttp.status == 200) {
         if (xhttp.readyState==4) {
-          alert(xhttp.responseText);
-
           if (document.getElementById("response")!=null){
-            document.removeChild(response);
+            document.body.removeChild(response);
           }
           var response = document.createElement("p");
           response.setAttribute("id","response");
@@ -137,38 +134,8 @@
             "&language="+encodeURIComponent(checkNull (document.getElementById("language")))+
             "&author_id="+encodeURIComponent(checkNull (document.getElementById("author_id")))+
             "&author_name="+encodeURIComponent(checkNull (document.getElementById("author_name"))));
-    /*alert("button="+encodeURIComponent(Button)+
-            "&book_id="+encodeURIComponent(checkNull (document.getElementById("book_id")))+
-            "&book_name="+encodeURIComponent(checkNull (document.getElementById("book_name")))+
-            "&pages="+encodeURIComponent(checkNull (document.getElementById("pages")))+
-            "&price="+encodeURIComponent(checkNull (document.getElementById("price")))+
-            "&language="+encodeURIComponent(checkNull (document.getElementById("language")))+
-            "&author_id="+encodeURIComponent(checkNull (document.getElementById("author_id")))+
-            "&author_name="+encodeURIComponent(checkNull (document.getElementById("author_name"))));*/
   }
 
-
-  function moveToPage(button,book_id,book_name,pages,price,language,author_id,author_name){
-    var URL;
-    alert("button="+encodeURIComponent(button)+
-    "&book_id="+encodeURIComponent(book_id)+
-    "&book_name="+encodeURIComponent(book_name)+
-    "&pages="+encodeURIComponent(pages)+
-    "&price="+encodeURIComponent(price)+
-    "&language="+encodeURIComponent(language)+
-    "&author_id="+encodeURIComponent(author_id)+
-    "&author_name="+encodeURIComponent(author_name));
-
-    URL="http://localhost:8081/searchresult?button="+encodeURIComponent(button)+
-            "&book_id="+encodeURIComponent(book_id)+
-            "&book_name="+encodeURIComponent(book_name)+
-            "&pages="+encodeURIComponent(pages)+
-            "&price="+encodeURIComponent(price)+
-            "&language="+encodeURIComponent(language)+
-            "&author_id="+encodeURIComponent(author_id)+
-            "&author_name="+encodeURIComponent(author_name);
-    return URL;
-  }
 </script>
     <button id="createAuthor" onclick="createAllForms(this)">Добавить нового автора</button>
     <button id="removeAuthor" onclick="createAllForms(this)">Удалить автора</button>
@@ -176,7 +143,7 @@
     <button id="createBook" onclick="createAllForms(this)">Добавить новую книгу</button>
     <button id="removeBook" onclick="createAllForms(this)">Удалить книгу</button>
     <button id="updateBook" onclick="createAllForms(this)">Обновить данные книги</button>
-    <button onclick="">Список заказов</button>
+    <button id="orders" onclick="location.href='http://localhost:8081/orderlist'">Список заказов</button>
 
 <table align="center" cellspacing="20">
   <td valign="top">

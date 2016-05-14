@@ -10,19 +10,15 @@
   function moveToAnotherPage(){
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/search", true);
-    //alert("opened!");
     if (document.getElementById("authorRB").checked) {
       var authorRB = document.getElementById("authorRB").value;
     }
     if (document.getElementById("bookRB").checked) {
       var bookRB = document.getElementById("bookRB").value;
     }
-
     xhttp.onreadystatechange = function() {
-      //alert("status: "+xhttp.status+"state: "+xhttp.readyState);
       if(xhttp.status == 200) {
         if (xhttp.readyState==4) {
-          //alert(xhttp.responseText);
           var resp="По запросу '"+document.getElementById("text").value+"' ничего не найдено";
           if (xhttp.responseText != resp) {
             var URL;
@@ -32,7 +28,6 @@
             else if (authorRB == "author")
               URL = "http://localhost:8081/searchresult?q="+encodeURIComponent("author") +
                       "&name=" + encodeURIComponent(document.getElementById("text").value);
-            alert("URL: " + URL);
             return location.href = URL;
           } else {
             var p=document.getElementById("responseText");
