@@ -5,33 +5,40 @@ This is a web application online book store.
 Run
 -------------
 
-You should connect to Oracle database at first. Input your login and password in function connectDatabase():
-
+You should configure the Oracle database at first. Open DatabaseManagement.java and find function connectDatabase(). Input your login and password here:
 
 >  ds.setUser("your login");
 >  ds.setPassword("your password");
 
-Then run script Tables.sql (way to this file: BookStore/tree/master/src/main). All tables (Author and Book) and some records will be created in your database.
+Then run script Tables.sql (way to this file: BookStore/tree/master/src/main). All tables (Author, Book, Customer and Booking) and some records will be created in your database. Configurate your Apache Tomcat server, build project and start server. Now you can input http://localhost:8080/main in your browser and see working program.
+
+Description
+-------------------
+There are four classes for comfortable work with database records, there are nine servlets and jsp-pages for data processing and user iteraction. 
 
 Capabilities
--------------------
-You can insert, delete, update and output records. You can find all these functions in DatabaseHelper class.
-
-Use function insertBook(...) or insertAuthor(...) to insert record and list parameters, that you want to put.
->db.insertAuthor("Agatha Christie");
->db.insertBook("The Clocks", 288, 137 ,"english" ,6 );
-
-Use function deleteBook() or deleteAuthor() to delete record  and write in parameter id of record, that you want to delete.
-
->db.deleteAuthor(6);
->db.deleteBook(4);
-
-Use function updateBook(...) or updateAuthor(...) to update record and list parameters, that you want to update. If you don`t want to update some arguments, write null (String) or 0 (int).
-
->db.updateAuthor("Agatha Christie");
->db.updateBook(5, "The Clocks", 250 ,0 ,null, 0);
-
-Use fuction getAllBook() or getAllAuthor() to output records .
-
->db.getAllBook();
->db.getAllAuthor();
+------------------
+All servlets have the same structure:
+1. init()
+2. doGet()
+3. doPost()
+4. destroy()
+Database is initialized in init() function and is closed in destroy() function.
+1. Administation
+Administrator watch content of Author and Book tables. He can insert, delete or update records and watch booking list.
+2. AuthorInfo
+User watch information about selected author (there is list of author`s books in table)
+3. BookInfo
+User watch information about selected book (name,author,pages,price,language)
+4. MainPage
+The main page, which user sees at first
+5. Order
+User inputs his name and email, when he buying book
+6. OrderInfo
+User watch information about his order
+7. OrderList
+All information about orders outputs here
+8. Search
+User input name of author or book, which he wants to find
+9. SearchResult
+The result of searching some book or author
