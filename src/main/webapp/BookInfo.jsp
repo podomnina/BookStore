@@ -7,9 +7,8 @@
 </head>
 <body>
 <button onclick="location.href='http://localhost:8081/main'">На главную страницу</button>
-<table border="1" align="center" cellpadding="20" cellspacing="0" width="70%">
+<table align="center">
   <tr>
-    <td rowspan="6"><img src="http://localhost:8081/images/1.jpg" alt="Обложка" /></td>
     <th colspan="2"><h1><c:out value="${book.name}"/></h1></th>
   </tr>
   <tr>
